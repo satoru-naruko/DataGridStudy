@@ -9,27 +9,40 @@
         d:DataContext="{d:DesignInstance local:MainWindowViewModel}"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <Style TargetType="{x:Type TextBlock}" x:Key="TestStyle">
+            <Setter Property="Margin" Value="1 1 1 1" />
+            <Setter Property="Padding" Value="10" />
+        </Style>
+    </Window.Resources>
     <StackPanel>
         <DataGrid ItemsSource="{Binding Path=Tweets, Mode=TwoWay}" 
                   Visibility="Visible"
                   AutoGenerateColumns="False"
-                  IsReadOnly="True" >
+                  IsReadOnly="False" >
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Path=Name}"
+                <DataGridTextColumn Binding="{Binding Path=Name}" 
+                    CanUserReorder="True" CanUserResize="True" IsReadOnly="True"
+                    CanUserSort="True" Header="ユーザ名" Width="80" ElementStyle="{StaticResource TestStyle}"/>
+                <DataGridTextColumn Binding="{Binding Path=Text}" 
                     CanUserReorder="True" CanUserResize="True"
-                    CanUserSort="True" Header="ユーザ名" Width="80" />
-                <DataGridTextColumn Binding="{Binding Path=Text}"
-                    CanUserReorder="True" CanUserResize="True"
-                    CanUserSort="True" Header="氏名" Width="100" />
+                    CanUserSort="True" Header="テキスト" Width="100" />
                 <DataGridTextColumn Binding="{Binding Path=ImageUrl}"
                     CanUserReorder="True" CanUserResize="True"
-                    CanUserSort="True" Header="出身地" Width="80" />
+                    CanUserSort="True" Header="URL" Width="150" />
+                <DataGridTemplateColumn Header="ViewWebPage">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Go Content" Command="{Binding DataContext.AddCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
 
         </DataGrid>
 
-        <Button Command="{Binding AddCommand}">
+        <!--<Button Command="{Binding AddCommand}">
             Add
-        </Button>
+        </Button>-->
     </StackPanel>
 </Window>
